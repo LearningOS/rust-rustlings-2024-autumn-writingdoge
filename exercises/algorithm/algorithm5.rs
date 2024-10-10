@@ -1,14 +1,13 @@
 /*
-	bfs
-	This problem requires you to implement a basic BFS algorithm
+    bfs
+    This problem requires you to implement a basic BFS algorithm
 */
 
-//I AM NOT DONE
 use std::collections::VecDeque;
 
 // Define a graph
 struct Graph {
-    adj: Vec<Vec<usize>>, 
+    adj: Vec<Vec<usize>>,
 }
 
 impl Graph {
@@ -21,20 +20,30 @@ impl Graph {
 
     // Add an edge to the graph
     fn add_edge(&mut self, src: usize, dest: usize) {
-        self.adj[src].push(dest); 
-        self.adj[dest].push(src); 
+        self.adj[src].push(dest);
+        self.adj[dest].push(src);
     }
 
     // Perform a breadth-first search on the graph, return the order of visited nodes
     fn bfs_with_return(&self, start: usize) -> Vec<usize> {
-        
-		//TODO
-
+        //TODO
+        let mut q: VecDeque<usize> = VecDeque::new();
+        q.push_back(start);
         let mut visit_order = vec![];
+        while (!q.is_empty()) {
+            let mut k = q.pop_front().unwrap() as usize;
+            if visit_order.contains(&k) {
+                continue;
+            }
+            for i in self.adj[k].clone() {
+                q.push_back(i);
+            }
+            visit_order.push(k);
+        }
+
         visit_order
     }
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -84,4 +93,3 @@ mod tests {
         assert_eq!(visited_order, vec![0]);
     }
 }
-
