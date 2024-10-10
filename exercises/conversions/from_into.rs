@@ -40,10 +40,36 @@ impl Default for Person {
 // If while parsing the age, something goes wrong, then return the default of
 // Person Otherwise, then return an instantiated Person object with the results
 
-// I AM NOT DONE
-
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        if s.len() == 0 {
+            return Person::default();
+        }
+        if let Some(index) = s.find(',') {
+            // 切分字符串
+            if index == 0 {
+                return Person::default();
+            }
+            let name = &s[..index].to_string(); // 从开始到第一个逗号
+            let num_string = &s[index + 1..];
+            let num = num_string.parse::<usize>();
+            let mut age: usize = 10;
+            match num {
+                Ok(value) => age = value,
+                _ => return Person::default(),
+            };
+
+            return Person {
+                name: name.to_string(),
+                age,
+            };
+        } else {
+            return Person::default();
+        }
+        //let v: Vec<&str> = s.split_terminator(",").collect();
+        // let name = v[0]
+
+        // let num_string = v[1..].join("");
     }
 }
 
