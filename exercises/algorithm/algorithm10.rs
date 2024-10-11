@@ -1,8 +1,7 @@
 /*
-	graph
-	This problem requires you to implement a basic graph functio
+    graph
+    This problem requires you to implement a basic graph functio
 */
-// I AM NOT DONE
 
 use std::collections::{HashMap, HashSet};
 use std::fmt;
@@ -30,6 +29,19 @@ impl Graph for UndirectedGraph {
     }
     fn add_edge(&mut self, edge: (&str, &str, i32)) {
         //TODO
+        self.add_node(edge.0);
+        self.add_node(edge.1);
+
+        self.adjacency_table_mutable()
+            .get_mut(edge.0)
+            .unwrap()
+            .push((edge.1.to_string(), edge.2));
+        self.adjacency_table_mutable()
+            .get_mut(edge.1)
+            .unwrap()
+            .push((edge.0.to_string(), edge.2));
+
+        //self.adjacency_table[*edge[0]].push((edge[1], edge[2]));
     }
 }
 pub trait Graph {
@@ -38,11 +50,14 @@ pub trait Graph {
     fn adjacency_table(&self) -> &HashMap<String, Vec<(String, i32)>>;
     fn add_node(&mut self, node: &str) -> bool {
         //TODO
-		true
+        if self.adjacency_table().contains_key(node) {
+            return false;
+        }
+        self.adjacency_table_mutable()
+            .insert(node.to_string(), Vec::new());
+        true
     }
-    fn add_edge(&mut self, edge: (&str, &str, i32)) {
-        //TODO
-    }
+    fn add_edge(&mut self, edge: (&str, &str, i32));
     fn contains(&self, node: &str) -> bool {
         self.adjacency_table().get(node).is_some()
     }
@@ -54,6 +69,7 @@ pub trait Graph {
         for (from_node, from_node_neighbours) in self.adjacency_table() {
             for (to_node, weight) in from_node_neighbours {
                 edges.push((from_node, to_node, *weight));
+                println!("{} {} {}", from_node, to_node, weight);
             }
         }
         edges
@@ -69,6 +85,7 @@ mod test_undirected_graph {
         graph.add_edge(("a", "b", 5));
         graph.add_edge(("b", "c", 10));
         graph.add_edge(("c", "a", 7));
+        // graph.edges();
         let expected_edges = [
             (&String::from("a"), &String::from("b"), 5),
             (&String::from("b"), &String::from("a"), 5),
