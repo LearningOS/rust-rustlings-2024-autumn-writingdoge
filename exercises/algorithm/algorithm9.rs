@@ -45,8 +45,6 @@ where
             self.items.swap(idx, idx / 2);
             idx /= 2;
         } // 不断上浮
-
-        //self.swim(self.count);
     }
 
     fn parent_idx(&self, idx: usize) -> usize {
